@@ -1,8 +1,22 @@
 from django.db import models
+from users.models import User
 
 # Create your models here.
 
-from django.db import models
+
+class Question(models.Model):
+    question = models.TextField(null=True, blank=True)
+
+
+class Answer(models.Model):
+    answer = (
+        ("0", "NO"),
+        ("1", "YES"),
+    )
+    question = models.ForeignKey(Question, related_name='question_answer', on_delete=models.PROTECT, null=True, blank=True)
+    answer = models.CharField(max_length=225, choices=answer, default="0")
+    user = models.ForeignKey(User, related_name='users_notifications', on_delete=models.PROTECT, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
 
 
 class CustomText(models.Model):

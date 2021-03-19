@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import pre_save
+import uuid
 
 
 class User(AbstractUser):
@@ -20,7 +22,27 @@ class User(AbstractUser):
 
     # First Name and Last Name do not cover name patterns
     # around the globe.
+    email = models.EmailField(_('email address'), unique=True)
     name = models.CharField(_("Name of User"), blank=True, null=True, max_length=255)
+    dob = models.DateField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    street = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    zip = models.CharField(max_length=255, blank=True, null=True)
+    dl = models.CharField(max_length=255, blank=True, null=True)
+    ssn = models.CharField(max_length=255, blank=True, null=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def get_absolute_url(self):
-        return reverse("users:detail", kwargs={"username": self.username})
+        return reverse("users:detail", kwargs={"id": self.id})
+
+
+    @staticmethod
+    def pre_save(sender, instance, **kwargs):
+        cd = uuid.uuid4().hex[:6].upper()
+        instance.username = instance.email.split('@')[0] + cd
+
+
+pre_save.connect(User.pre_save, User, dispatch_uid="users.models.User")

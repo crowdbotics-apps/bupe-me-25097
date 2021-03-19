@@ -33,6 +33,8 @@ urlpatterns = [
     # Override email confirm to use allauth's HTML view instead of rest_auth's API view
     path("rest-auth/registration/account-confirm-email/<str:key>/", confirm_email),
     path("rest-auth/registration/", include("rest_auth.registration.urls")),
+    # oauth server
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
 
 admin.site.site_header = "Bupe-me"

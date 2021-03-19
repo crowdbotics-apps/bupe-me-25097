@@ -8,16 +8,36 @@ from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from rest_framework import serializers
 from rest_auth.serializers import PasswordResetSerializer
+from rest_auth.models import TokenModel
 
-from home.models import CustomText, HomePage
+from home.models import CustomText, HomePage, Question, Answer
 
 User = get_user_model()
 
 
+### CORE APP ###
+
+class QuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Question
+        fields = "__all__"
+
+class AnswerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Answer
+        fields = "__all__"
+
+### CORE APP END ###
+
+
+### USER BASED SERIALIZERS ###
+
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'name', 'email', 'password')
+        fields = ('id', 'name', 'email', 'password', 'dob', 'phone', 'street', 'city', 'state', 'zip', 'dl', 'ssn')
         extra_kwargs = {
             'password': {
                 'write_only': True,
@@ -49,6 +69,16 @@ class SignupSerializer(serializers.ModelSerializer):
         user = User(
             email=validated_data.get('email'),
             name=validated_data.get('name'),
+
+            dob=validated_data.get('dob'),
+            phone=validated_data.get('phone'),
+            street=validated_data.get('street'),
+            city=validated_data.get('city'),
+            state=validated_data.get('state'),
+            zip=validated_data.get('zip'),
+            dl=validated_data.get('dl'),
+            ssn=validated_data.get('ssn'),
+
             username=generate_unique_username([
                 validated_data.get('name'),
                 validated_data.get('email'),
@@ -81,8 +111,61 @@ class HomePageSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'name']
+        fields = ('id', 'name', 'email', 'dob', 'phone', 'street', 'city', 'state', 'zip', 'dl', 'ssn')
 
+class TokenSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Token model.
+    """
+    id = serializers.SerializerMethodField('get_id')
+    email = serializers.SerializerMethodField('get_email')
+    name = serializers.SerializerMethodField('get_name')
+
+    dob = serializers.SerializerMethodField('get_dob')
+    phone = serializers.SerializerMethodField('get_phone')
+    street = serializers.SerializerMethodField('get_street')
+    city = serializers.SerializerMethodField('get_city')
+    state = serializers.SerializerMethodField('get_state')
+    zip = serializers.SerializerMethodField('get_zip')
+    dl = serializers.SerializerMethodField('get_dl')
+    ssn = serializers.SerializerMethodField('get_ssn')
+
+    def get_id(self, obj):
+        return obj.user.id
+
+    def get_name(self, obj):
+        return obj.user.name
+
+    def get_email(self, obj):
+        return obj.user.email
+
+    def get_dob(self, obj):
+        return obj.user.dob
+
+    def get_phone(self, obj):
+        return obj.user.phone
+
+    def get_street(self, obj):
+        return obj.user.street
+
+    def get_city(self, obj):
+        return obj.user.city
+
+    def get_state(self, obj):
+        return obj.user.state
+
+    def get_zip(self, obj):
+        return obj.user.zip
+
+    def get_dl(self, obj):
+        return obj.user.dl
+
+    def get_ssn(self, obj):
+        return obj.user.ssn
+
+    class Meta:
+        model = TokenModel
+        fields = ('key', 'id', 'name', 'email', 'dob', 'phone', 'street', 'city', 'state', 'zip', 'dl', 'ssn')
 
 class PasswordSerializer(PasswordResetSerializer):
     """Custom serializer for rest_auth to solve reset password error"""
