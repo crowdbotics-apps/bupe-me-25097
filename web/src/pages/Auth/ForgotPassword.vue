@@ -4,7 +4,7 @@
   >
 
     <div class="">
-      <q-card  class="q-pa-md q-ma-none bg-white main-card-bg" style="width:420px;">
+      <q-card  class="q-pa-md no-shadow q-ma-none bg-white main-card-bg" style="width:420px;">
 
         <!-- Logo & App Name -->
         <q-card-section class="q-mt-md q-mb-sm">

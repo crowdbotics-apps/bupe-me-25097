@@ -2,7 +2,7 @@
   <q-page class="row justify-center items-center">
 
     <div class="col-md-6 col-xl-6 col-sm-12 col-xs-12">
-      <q-card  class="q-pa-md q-ma-md bg-white main-card-bg">
+      <q-card  class="q-pa-md no-shadow q-ma-md bg-white main-card-bg">
         <q-card-section class="q-mt-md q-mb-sm">
           <div class="row justify-center items-center">
               <span class="auth-title">Profile</span>
