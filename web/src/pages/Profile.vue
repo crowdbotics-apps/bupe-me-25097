@@ -1,11 +1,11 @@
 <template>
   <q-page class="row justify-center items-center">
 
-    <div class="col-md-6 col-xl-6 col-sm-12 col-xs-12">
+    <div class="col-md-6 col-xl-6 col-sm-12 col-xs-12" style="margin-top:60px">
       <q-card  class="q-pa-md no-shadow q-ma-md bg-white main-card-bg">
-        <q-card-section class="q-mt-md q-mb-sm">
-          <div class="row justify-center items-center">
-              <span class="auth-title">Profile</span>
+        <q-card-section class="q-mt-md q-mb-sm text-left">
+          <div class="text-left">
+              <span class="auth-title" style="text-align:left !important">{{firstName}} {{lastName}}</span>
           </div>
         </q-card-section>
         <q-card-section class="text-grey-8">
