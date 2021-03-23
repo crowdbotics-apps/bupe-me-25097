@@ -1,15 +1,14 @@
-from allauth.account.auth_backends import AuthenticationBackend
-from oauth2_provider.decorators import protected_resource
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from oauth2_provider.views.generic import ProtectedResourceView, ScopedResourceMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from oauth2_provider.contrib.rest_framework import TokenHasScope, OAuth2Authentication
-from rest_framework import permissions
+from datetime import date, datetime
+from datetime import timedelta
+from django.conf import settings
+from django.utils import timezone
 
 from home.models import *
 
@@ -26,15 +25,55 @@ from home.models import CustomText, HomePage
 
 ### CORE APP ###
 
-class QuestionViewSet(ModelViewSet):
-    serializer_class = QuestionSerializer
-    queryset = Question.objects.all()
+class QuestionApi(APIView):
+
+    def get(self, request, format=None):
+        user = self.request.user
+
+        today = datetime.today()
+        day = date.isoweekday(today)
+
+        question = Question.objects.filter(day=day).last()
+        question_serializer = QuestionSerializer(question)
+
+        today_min = datetime.combine(timezone.now().date(), datetime.today().time().min)
+        today_max = datetime.combine(timezone.now().date(), datetime.today().time().max)
+
+        answer = Answer.objects.filter(user=user, created__range=(today_min, today_max)).first()
+        answer_serializer = AnswerSerializer(answer)
+        if answer:
+            is_answered = True
+            data = {
+                'question': question_serializer.data,
+                'is_answered': is_answered,
+                'answer': answer_serializer.data
+            }
+            return Response(data)
+        else:
+            is_answered = False
+            data = {
+                'question': question_serializer.data,
+                'is_answered': is_answered,
+                'answer': None
+            }
+            return Response(data)
+
 
 
 class AnswerApi(APIView):
 
     def post(self, request, format=None):
         user = self.request.user
+        today_min = datetime.combine(timezone.now().date(), datetime.today().time().min)
+        today_max = datetime.combine(timezone.now().date(), datetime.today().time().max)
+        checkAnswer = Answer.objects.filter(user=user, created__range=(today_min, today_max)).first()
+        if checkAnswer:
+            tmp = {
+                'message': 'Error!',
+                'data': 'You already have answered question today.'
+            }
+            return Response(tmp)
+
         question = request.data['question']
         answer = request.data['answer']
 

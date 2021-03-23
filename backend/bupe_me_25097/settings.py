@@ -17,7 +17,7 @@ import logging
 env = environ.Env()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -219,6 +219,7 @@ REST_AUTH_SERIALIZERS = {
     # Replace password reset serializer to fix 500 error
     "PASSWORD_RESET_SERIALIZER": "home.api.v1.serializers.PasswordSerializer",
     "TOKEN_SERIALIZER": "home.api.v1.serializers.TokenSerializer",
+    "USER_DETAILS_SERIALIZER": "home.api.v1.serializers.UserSerializer",
 
 }
 REST_AUTH_REGISTER_SERIALIZERS = {
@@ -269,6 +270,16 @@ FCM_DJANGO_SETTINGS = {
 }
 # end fcm_django push notifications
 
+# CORS Options
+CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:10096',
+] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:10096',
+]
+# Cors Options End
 
 # Swagger settings for api docs
 SWAGGER_SETTINGS = {

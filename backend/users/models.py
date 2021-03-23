@@ -1,10 +1,9 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_save
 import uuid
-
 
 class User(AbstractUser):
     # WARNING!
@@ -23,17 +22,17 @@ class User(AbstractUser):
     # First Name and Last Name do not cover name patterns
     # around the globe.
     email = models.EmailField(_('email address'), unique=True)
-    name = models.CharField(_("Name of User"), blank=True, null=True, max_length=255)
+    first_name = models.CharField(_("First Name of User"), blank=True, null=True, max_length=255)
+    middle_name = models.CharField(_("Middle Name of User"), blank=True, null=True, max_length=255)
+    last_name = models.CharField(_("Last Name of User"), blank=True, null=True, max_length=255)
     dob = models.DateField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
-    street = models.CharField(max_length=255, blank=True, null=True)
+    street1 = models.CharField(max_length=255, blank=True, null=True)
+    street2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
     zip = models.CharField(max_length=255, blank=True, null=True)
     dl = models.CharField(max_length=255, blank=True, null=True)
     ssn = models.CharField(max_length=255, blank=True, null=True)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"id": self.id})

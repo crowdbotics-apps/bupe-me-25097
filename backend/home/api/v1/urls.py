@@ -6,7 +6,7 @@ from home.api.v1.viewsets import (
     LoginViewSet,
     HomePageViewSet,
     CustomTextViewSet,
-    QuestionViewSet,
+    QuestionApi,
     AnswerApi,
 )
 
@@ -20,11 +20,8 @@ router.register("signup", SignupViewSet, basename="signup")
 router.register("login", LoginViewSet, basename="login")
 ### END AUTH ROUTES ###
 
-### CORE ROUTES ###
-router.register("questions", QuestionViewSet)
-### END CORE ROUTES ###
-
 urlpatterns = [
     path("", include(router.urls)),
-    path('answer', AnswerApi.as_view())
+    path('answer', AnswerApi.as_view()),
+    path('question', QuestionApi.as_view())
 ]

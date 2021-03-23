@@ -5,7 +5,17 @@ from users.models import User
 
 
 class Question(models.Model):
+    days = (
+        ("1", "Monday"),
+        ("2", "Tuesday"),
+        ("3", "Wednesday"),
+        ("4", "Thursday"),
+        ("5", "Friday"),
+        ("6", "Saturday"),
+        ("7", "Sunday"),
+    )
     question = models.TextField(null=True, blank=True)
+    day = models.CharField(max_length=225, choices=days, default="1")
 
 
 class Answer(models.Model):
