@@ -65,6 +65,10 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
     'storages',
 
+    # start django filters
+    'django_filters',
+    # end django filters
+
     # start fcm_django push notifications
     'fcm_django',
     # end fcm_django push notifications
@@ -199,6 +203,8 @@ MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), os.path.join(BASE_DIR, 'web_build/statics')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_INDEX_FILE = True
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'web_build')
 
 # allauth / users
 ACCOUNT_EMAIL_REQUIRED = True
