@@ -30,7 +30,7 @@
                 <q-icon name="email" color="gray"/>
               </template>
             </q-input>
-            <q-input  square filled v-model="dob" mask="####-##-##" label="Date of birth" class="main-input-bg">
+            <q-input  square filled v-model="dob" mask="##-##-####" label="Date of birth" class="main-input-bg">
               <template v-slot:prepend>
                 <q-icon name="img:statics/icons/calendar.png" color="gray">
                 </q-icon>
@@ -126,7 +126,8 @@ export default {
           this.middleName = res.data.middle_name
           this.lastName = res.data.last_name
           this.email = res.data.email
-          this.dob = res.data.dob
+          const dateOfBirth = res.data.dob.split('-')
+          this.dob = dateOfBirth[1] + '-' + dateOfBirth[2] + '-' + dateOfBirth[0]
           this.phone = res.data.phone
           this.street1 = res.data.street1
           this.street2 = res.data.street2
@@ -145,13 +146,15 @@ export default {
         })
         return false
       }
+      console.log(this.dob)
+      const dateOfBirth = this.dob.split('-')
       this.loading = true
       const formData = {
         email: this.email,
         first_name: this.firstName,
         middle_name: this.middleName,
         last_name: this.lastName,
-        dob: this.dob,
+        dob: dateOfBirth[2] + '-' + dateOfBirth[0] + '-' + dateOfBirth[1],
         phone: this.phone,
         street1: this.street1,
         street2: this.street2,
