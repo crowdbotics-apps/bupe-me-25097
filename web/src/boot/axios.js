@@ -4,7 +4,7 @@ import Router from 'src/router'
 
 const Axios = axios.create({
   baseURL: process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:8000//'
+    ? 'https://bupe-me-25097.botics.co/'
     : 'https://bupe-me-25097.botics.co/'
 
 })
