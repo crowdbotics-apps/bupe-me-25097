@@ -37,7 +37,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'password', 'dob', 'phone', 'street1', 'street2', 'city', 'zip', 'dl', 'ssn')
+        fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'password', 'dob', 'phone', 'street1', 'street2', 'city', 'state', 'zip', 'dl', 'ssn')
         extra_kwargs = {
             'password': {
                 'write_only': True,
@@ -77,6 +77,7 @@ class SignupSerializer(serializers.ModelSerializer):
             street1=validated_data.get('street1'),
             street2=validated_data.get('street2'),
             city=validated_data.get('city'),
+            state=validated_data.get('state'),
             zip=validated_data.get('zip'),
             dl=validated_data.get('dl'),
             ssn=validated_data.get('ssn'),
@@ -113,7 +114,7 @@ class HomePageSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'dob', 'phone', 'street1', 'street2', 'city', 'zip', 'dl', 'ssn')
+        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'dob', 'phone', 'street1', 'street2', 'state', 'city', 'zip', 'dl', 'ssn')
 
 class TokenSerializer(serializers.ModelSerializer):
     """
@@ -129,6 +130,7 @@ class TokenSerializer(serializers.ModelSerializer):
     phone = serializers.SerializerMethodField('get_phone')
     street1 = serializers.SerializerMethodField('get_street1')
     street2 = serializers.SerializerMethodField('get_street2')
+    state = serializers.SerializerMethodField('get_state')
     city = serializers.SerializerMethodField('get_city')
     zip = serializers.SerializerMethodField('get_zip')
     dl = serializers.SerializerMethodField('get_dl')
@@ -164,6 +166,8 @@ class TokenSerializer(serializers.ModelSerializer):
     def get_city(self, obj):
         return obj.user.city
 
+    def get_state(self, obj):
+        return obj.user.state
 
     def get_zip(self, obj):
         return obj.user.zip
@@ -176,7 +180,7 @@ class TokenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TokenModel
-        fields = ('key', 'id', 'first_name', 'last_name', 'middle_name', 'email', 'dob', 'phone', 'street1', 'street2', 'city', 'zip', 'dl', 'ssn')
+        fields = ('key', 'id', 'first_name', 'last_name', 'middle_name', 'email', 'dob', 'phone', 'street1', 'street2', 'city', 'state', 'zip', 'dl', 'ssn')
 
 class PasswordSerializer(PasswordResetSerializer):
     """Custom serializer for rest_auth to solve reset password error"""

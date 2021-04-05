@@ -29,6 +29,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=255, blank=True, null=True)
     street1 = models.CharField(max_length=255, blank=True, null=True)
     street2 = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     zip = models.CharField(max_length=255, blank=True, null=True)
     dl = models.CharField(max_length=255, blank=True, null=True)
