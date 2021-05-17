@@ -2,31 +2,20 @@ import React from "react"
 import { createDrawerNavigator } from "@react-navigation/drawer"
 import { NavigationContainer } from "@react-navigation/native"
 
-import SplashScreen from "../features/SplashScreen"
+import RoutesAuth from "./RoutesAuth"
 import SideMenu from "./sideMenu"
-//@BlueprintImportInsertion
-
-/**
- * new navigators can be imported here
- */
-
-const AppNavigator = {
-  //@BlueprintNavigationInsertion
-
-  /** new navigators can be added here */
-  SplashScreen: {
-    screen: SplashScreen
-  }
-}
+import Routes from "./Routes"
 
 const Drawer = createDrawerNavigator()
 
 const AppContainer = () => {
+  const loggedIn = false
+  const Nav = loggedIn ? RoutesAuth : Routes
   return (
     <NavigationContainer>
       <Drawer.Navigator drawerContent={props => <SideMenu {...props} />}>
-        {Object.keys(AppNavigator).map(s => (
-          <Drawer.Screen name={s} component={AppNavigator[s].screen} />
+        {Object.keys(Nav).map((s, key) => (
+          <Drawer.Screen key={key} name={s} component={Nav[s].screen} />
         ))}
       </Drawer.Navigator>
     </NavigationContainer>

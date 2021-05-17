@@ -1,12 +1,14 @@
 import React from "react"
-import { View, Text, StyleSheet } from "react-native"
 import { Provider as ReduxProvider } from "react-redux"
+import { View, Text, StyleSheet } from "react-native"
+import RNBootSplash from "react-native-bootsplash"
 
-import SplashScreen from "./features/SplashScreen"
-import { store } from "./store"
-import NavigatorProvider from "./navigator/mainNavigator"
-import { setupHttpConfig } from "./utils/http"
 import * as NavigationService from "./navigator/NavigationService"
+import NavigatorProvider from "./navigator/mainNavigator"
+import SplashScreen from "./features/SplashScreen"
+import { setupHttpConfig } from "./utils/http"
+import { store } from "./store"
+import { AppModal } from "./components"
 
 export default class App extends React.Component {
   state = {
@@ -33,6 +35,7 @@ export default class App extends React.Component {
   loadAssets = async () => {
     // add any loading assets here
     this.setState({ isLoaded: true })
+    RNBootSplash.hide()
   }
 
   renderLoading = () => (
@@ -43,6 +46,7 @@ export default class App extends React.Component {
 
   renderApp = () => (
     <ReduxProvider store={store}>
+      {/* <AppModal /> */}
       <NavigatorProvider />
     </ReduxProvider>
   )
